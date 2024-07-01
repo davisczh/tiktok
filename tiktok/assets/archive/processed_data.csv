@@ -1,0 +1,241 @@
+ID,Category,Name,Units Sold,Unit Price
+10001,Electronics,iPhone 14 Pro,2,999.99
+10002,Home Appliances,Dyson V11 Vacuum,1,499.99
+10003,Clothing,Levi's 501 Jeans,3,69.99
+10004,Books,The Da Vinci Code,4,15.99
+10005,Beauty Products,Neutrogena Skincare Set,1,89.99
+10006,Sports,Wilson Evolution Basketball,5,29.99
+10007,Electronics,MacBook Pro 16-inch,1,2499.99
+10008,Home Appliances,Blueair Classic 480i,2,599.99
+10009,Clothing,Nike Air Force 1,6,89.99
+10010,Books,Dune by Frank Herbert,2,25.99
+10011,Beauty Products,Chanel No. 5 Perfume,1,129.99
+10012,Sports,Babolat Pure Drive Tennis Racket,3,199.99
+10013,Electronics,Samsung Galaxy Tab S8,2,749.99
+10014,Home Appliances,Keurig K-Elite Coffee Maker,1,189.99
+10015,Clothing,North Face Down Jacket,2,249.99
+10016,Books,"Salt, Fat, Acid, Heat by Samin Nosrat",3,35.99
+10017,Beauty Products,Dyson Supersonic Hair Dryer,1,399.99
+10018,Sports,Manduka PRO Yoga Mat,4,119.99
+10019,Electronics,Garmin Forerunner 945,2,499.99
+10020,Home Appliances,Ninja Professional Blender,1,99.99
+10021,Clothing,Zara Summer Dress,3,59.99
+10022,Books,Gone Girl by Gillian Flynn,2,22.99
+10023,Beauty Products,Olay Regenerist Face Cream,1,49.99
+10024,Sports,Adidas FIFA World Cup Football,3,29.99
+10025,Electronics,Bose QuietComfort 35 Headphones,1,299.99
+10026,Home Appliances,Panasonic NN-SN966S Microwave,1,179.99
+10027,Clothing,Adidas Ultraboost Shoes,2,179.99
+10028,Books,Pride and Prejudice by Jane Austen,3,12.99
+10029,Beauty Products,MAC Ruby Woo Lipstick,1,29.99
+10030,Sports,Nike Air Zoom Pegasus 37,2,129.99
+10031,Electronics,Sony WH-1000XM4 Headphones,2,349.99
+10032,Home Appliances,Instant Pot Duo,3,89.99
+10033,Clothing,Under Armour HeatGear T-Shirt,5,29.99
+10034,Books,1984 by George Orwell,4,19.99
+10035,Beauty Products,L'Oreal Revitalift Serum,2,39.99
+10036,Sports,Peloton Bike,1,1895
+10037,Electronics,Apple Watch Series 8,3,399.99
+10038,Home Appliances,Roomba i7+,2,799.99
+10039,Clothing,Columbia Fleece Jacket,4,59.99
+10040,Books,Harry Potter and the Sorcerer's Stone,3,24.99
+10041,Beauty Products,Estee Lauder Advanced Night Repair,1,105
+10042,Sports,Fitbit Charge 5,2,129.99
+10043,Electronics,GoPro HERO10 Black,3,399.99
+10044,Home Appliances,Nespresso VertuoPlus,1,199.99
+10045,Clothing,Patagonia Better Sweater,2,139.99
+10046,Books,Becoming by Michelle Obama,4,32.5
+10047,Beauty Products,Clinique Moisture Surge,1,52
+10048,Sports,Yeti Rambler Tumbler,6,39.99
+10049,Electronics,Kindle Paperwhite,2,129.99
+10050,Home Appliances,Breville Smart Oven,1,299.99
+10051,Clothing,Ray-Ban Aviator Sunglasses,3,154.99
+10052,Books,The Silent Patient by Alex Michaelides,2,26.99
+10053,Beauty Products,Shiseido Ultimate Sun Protector,1,49
+10054,Sports,Titleist Pro V1 Golf Balls,5,49.99
+10055,Electronics,Anker PowerCore Portable Charger,4,59.99
+10056,Home Appliances,KitchenAid Artisan Stand Mixer,1,499.99
+10057,Clothing,Calvin Klein Boxer Briefs,5,29.99
+10058,Books,Educated by Tara Westover,3,28
+10059,Beauty Products,Anastasia Beverly Hills Brow Wiz,2,23
+10060,Sports,Hyperice Hypervolt Massager,1,349
+10061,Electronics,Nintendo Switch,3,299.99
+10062,Home Appliances,Philips Airfryer XXL,2,199.99
+10063,Clothing,Hanes ComfortSoft T-Shirt,10,9.99
+10064,Books,Where the Crawdads Sing by Delia Owens,4,18.99
+10065,Beauty Products,Lancome La Vie Est Belle,1,102
+10066,Sports,Garmin Edge 530,2,299.99
+10067,Electronics,Samsung QLED 4K TV,1,1199.99
+10068,Home Appliances,Eufy RoboVac 11S,3,219.99
+10069,Clothing,Puma Suede Classic Sneakers,4,59.99
+10070,Books,The Great Gatsby by F. Scott Fitzgerald,2,10.99
+10071,Beauty Products,Drunk Elephant C-Firma Day Serum,1,78
+10072,Sports,Nike Metcon 6,3,129.99
+10073,Electronics,HP Spectre x360 Laptop,1,1599.99
+10074,Home Appliances,De'Longhi Magnifica Espresso Machine,1,899.99
+10075,Clothing,Tommy Hilfiger Polo Shirt,5,49.99
+10076,Books,To Kill a Mockingbird by Harper Lee,4,14.99
+10077,Beauty Products,Glossier Boy Brow,2,16
+10078,Sports,Rogue Fitness Kettlebell,3,69.99
+10079,Electronics,Apple AirPods Pro,2,249.99
+10080,Home Appliances,Dyson Pure Cool Link,1,499.99
+10081,Clothing,Levi's Trucker Jacket,2,89.99
+10082,Books,The Hobbit by J.R.R. Tolkien,3,12.99
+10083,Beauty Products,Charlotte Tilbury Magic Cream,1,100
+10084,Sports,Spalding NBA Street Basketball,6,24.99
+10085,Electronics,Ring Video Doorbell,1,99.99
+10086,Home Appliances,LG OLED TV,2,1299.99
+10087,Clothing,Uniqlo Ultra Light Down Jacket,3,79.99
+10088,Books,The Catcher in the Rye by J.D. Salinger,4,13.99
+10089,Beauty Products,Sunday Riley Good Genes,1,105
+10090,Sports,On Running Cloud Shoes,2,129.99
+10091,Electronics,Logitech MX Master 3 Mouse,2,99.99
+10092,Home Appliances,Instant Pot Duo Crisp,1,179.99
+10093,Clothing,Adidas Originals Superstar Sneakers,4,79.99
+10094,Books,The Alchemist by Paulo Coelho,3,14.99
+10095,Beauty Products,Tatcha The Water Cream,1,68
+10096,Sports,Garmin Fenix 6X Pro,1,999.99
+10097,Electronics,Bose SoundLink Revolve+ Speaker,3,299.99
+10098,Home Appliances,Vitamix Explorian Blender,1,349.99
+10099,Clothing,Gap Essential Crewneck T-Shirt,6,19.99
+10100,Books,The Power of Now by Eckhart Tolle,2,12.99
+10101,Beauty Products,Kiehl's Midnight Recovery Concentrate,1,82
+10102,Sports,Under Armour HOVR Sonic 4 Shoes,2,109.99
+10103,Electronics,Canon EOS R5 Camera,1,3899.99
+10104,Home Appliances,Shark IQ Robot Vacuum,2,349.99
+10105,Clothing,H&M Slim Fit Jeans,3,39.99
+10106,Books,The Girl on the Train by Paula Hawkins,4,10.99
+10107,Beauty Products,The Ordinary Niacinamide Serum,1,6.5
+10108,Sports,Bowflex SelectTech 552 Dumbbells,1,399.99
+10109,Electronics,Google Nest Hub Max,2,229.99
+10110,Home Appliances,Cuisinart Griddler Deluxe,1,159.99
+10111,Clothing,Old Navy Relaxed-Fit T-Shirt,4,14.99
+10112,Books,Sapiens: A Brief History of Humankind by Yuval Noah Harari,2,18.99
+10113,Beauty Products,Biore UV Aqua Rich Watery Essence Sunscreen,1,15
+10114,Sports,Fitbit Versa 3,3,229.95
+10115,Electronics,Amazon Echo Show 10,1,249.99
+10116,Home Appliances,Breville Smart Grill,2,299.95
+10117,Clothing,Gap High Rise Skinny Jeans,3,49.99
+10118,Books,Atomic Habits by James Clear,4,16.99
+10119,Beauty Products,CeraVe Hydrating Facial Cleanser,2,14.99
+10120,Sports,YETI Hopper Flip Portable Cooler,1,249.99
+10121,Electronics,Apple iPad Air,2,599.99
+10122,Home Appliances,Hamilton Beach FlexBrew Coffee Maker,1,89.99
+10123,Clothing,Forever 21 Graphic Tee,5,12.99
+10124,Books,The Subtle Art of Not Giving a F*ck by Mark Manson,3,14.99
+10125,Beauty Products,NARS Radiant Creamy Concealer,1,30
+10126,Sports,Yeti Roadie 24 Cooler,1,199.99
+10127,Electronics,Sony PlayStation 5,1,499.99
+10128,Home Appliances,Dyson Supersonic Hair Dryer,2,399.99
+10129,Clothing,Lululemon Align Leggings,3,98
+10130,Books,The Four Agreements by Don Miguel Ruiz,2,8.99
+10131,Beauty Products,Fenty Beauty Killawatt Highlighter,1,36
+10132,Sports,Hydro Flask Wide Mouth Water Bottle,4,39.95
+10133,Electronics,Microsoft Surface Laptop 4,1,1299.99
+10134,Home Appliances,Keurig K-Mini Coffee Maker,2,79.99
+10135,Clothing,Gap Crewneck Sweatshirt,4,34.99
+10136,Books,Think and Grow Rich by Napoleon Hill,3,9.99
+10137,Beauty Products,The Ordinary Hyaluronic Acid Serum,1,6.8
+10138,Sports,Fitbit Inspire 2,2,99.95
+10139,Electronics,Samsung Odyssey G9 Gaming Monitor,1,1499.99
+10140,Home Appliances,Instant Pot Ultra,1,139.99
+10141,Clothing,Adidas Essential Track Pants,3,44.99
+10142,Books,The Power of Habit by Charles Duhigg,2,11.99
+10143,Beauty Products,Clinique Dramatically Different Moisturizing Lotion,1,29.5
+10144,Sports,YETI Tundra 45 Cooler,1,299.99
+10145,Electronics,Apple AirPods Max,1,549
+10146,Home Appliances,Cuisinart Coffee Center,2,199.95
+10147,Clothing,Levi's Sherpa Trucker Jacket,2,98
+10148,Books,The Outsiders by S.E. Hinton,3,10.99
+10149,Beauty Products,Laneige Water Sleeping Mask,1,25
+10150,Sports,Bose SoundSport Wireless Earbuds,2,149.99
+10151,Electronics,Sony WH-1000XM4 Headphones,1,349.99
+10152,Home Appliances,Ninja Foodi Pressure Cooker,2,199.99
+10153,Clothing,Nike Sportswear Club Fleece Hoodie,3,54.99
+10154,Books,The Night Circus by Erin Morgenstern,2,16.99
+10155,Beauty Products,GlamGlow Supermud Clearing Treatment,1,59
+10156,Sports,Garmin Forerunner 245,1,299.99
+10157,Electronics,Google Pixel 6 Pro,1,899.99
+10158,Home Appliances,Breville Nespresso Creatista Plus,1,499.95
+10159,Clothing,Under Armour Tech 2.0 T-Shirt,4,24.99
+10160,Books,The Art of War by Sun Tzu,3,7.99
+10161,Beauty Products,Youth to the People Superfood Antioxidant Cleanser,1,36
+10162,Sports,TriggerPoint GRID Foam Roller,2,34.99
+10163,Electronics,Apple MacBook Air,1,1199.99
+10164,Home Appliances,Cuisinart Custom 14-Cup Food Processor,1,199.99
+10165,Clothing,Adidas 3-Stripes Shorts,5,29.99
+10166,Books,The Hunger Games by Suzanne Collins,4,8.99
+10167,Beauty Products,Neutrogena Hydro Boost Water Gel,1,16.99
+10168,Sports,Yeti Rambler Bottle,3,49.99
+10169,Electronics,Samsung Odyssey G7 Gaming Monitor,1,699.99
+10170,Home Appliances,Instant Pot Duo Evo Plus,2,139.99
+10171,Clothing,Nike Tempo Running Shorts,3,34.99
+10172,Books,The Girl with the Dragon Tattoo by Stieg Larsson,2,9.99
+10173,Beauty Products,Paula's Choice Skin Perfecting 2% BHA Liquid Exfoliant,1,29.5
+10174,Sports,Bowflex SelectTech 1090 Adjustable Dumbbells,1,699.99
+10175,Electronics,Amazon Fire TV Stick 4K,3,49.99
+10176,Home Appliances,Crock-Pot 6-Quart Slow Cooker,2,49.99
+10177,Clothing,Uniqlo Airism Mesh Boxer Briefs,4,14.9
+10178,Books,The Sun Also Rises by Ernest Hemingway,3,11.99
+10179,Beauty Products,First Aid Beauty Ultra Repair Cream,2,34
+10180,Sports,Oakley Holbrook Sunglasses,1,146
+10181,Electronics,Google Pixelbook Go,1,649.99
+10182,Home Appliances,Dyson V8 Absolute,1,399.99
+10183,Clothing,Levi's 511 Slim Fit Jeans,3,59.99
+10184,Books,The Martian by Andy Weir,2,12.99
+10185,Beauty Products,La Mer Crème de la Mer Moisturizer,1,190
+10186,Sports,Polar Vantage V2,1,499.95
+10187,Electronics,Sonos Beam Soundbar,1,399
+10188,Home Appliances,Anova Precision Cooker,2,199
+10189,Clothing,Nike Dri-FIT Training Shorts,4,34.99
+10190,Books,The Catcher in the Rye by J.D. Salinger,3,10.99
+10191,Beauty Products,Glossier Cloud Paint,1,18
+10192,Sports,TRX All-in-One Suspension Training System,1,169.95
+10193,Electronics,Logitech G Pro X Wireless Gaming Headset,1,199.99
+10194,Home Appliances,Breville Smart Coffee Grinder Pro,1,199.95
+10195,Clothing,Adidas Ultraboost Running Shoes,2,179.99
+10196,Books,The Road by Cormac McCarthy,2,11.99
+10197,Beauty Products,Tom Ford Black Orchid Perfume,1,125
+10198,Sports,GoPro HERO9 Black,1,449.99
+10199,Electronics,Apple TV 4K,2,179
+10200,Home Appliances,Instant Pot Duo Nova,1,99.95
+10201,Clothing,Gap 1969 Original Fit Jeans,3,59.99
+10202,Books,The Goldfinch by Donna Tartt,2,14.99
+10203,Beauty Products,Dr. Jart+ Cicapair Tiger Grass Color Correcting Treatment,1,52
+10204,Sports,Yeti Tundra Haul Portable Wheeled Cooler,1,399.99
+10205,Electronics,Samsung Galaxy Watch 4,1,299.99
+10206,Home Appliances,KitchenAid Stand Mixer,1,379.99
+10207,Clothing,Lululemon Wunder Under High-Rise Leggings,2,98
+10208,Books,The Great Alone by Kristin Hannah,3,16.99
+10209,Beauty Products,Caudalie Vinoperfect Radiance Serum,1,79
+10210,Sports,Bose SoundLink Color Bluetooth Speaker II,1,129
+10211,Electronics,Canon EOS Rebel T7i DSLR Camera,1,749.99
+10212,Home Appliances,Keurig K-Elite Coffee Maker,2,169.99
+10213,Clothing,Uniqlo Airism Seamless Boxer Briefs,4,9.9
+10214,Books,The Girl with the Dragon Tattoo by Stieg Larsson,3,10.99
+10215,Beauty Products,L'Occitane Shea Butter Hand Cream,2,29
+10216,Sports,YETI Tundra 65 Cooler,1,349.99
+10217,Electronics,Apple MacBook Pro 16-inch,1,2399
+10218,Home Appliances,iRobot Braava Jet M6,1,449.99
+10219,Clothing,Champion Reverse Weave Hoodie,3,49.99
+10220,Books,The Nightingale by Kristin Hannah,2,12.99
+10221,Beauty Products,Tarte Shape Tape Concealer,1,27
+10222,Sports,Garmin Forerunner 945,1,599.99
+10223,Electronics,Amazon Echo Dot (4th Gen),4,49.99
+10224,Home Appliances,Philips Sonicare DiamondClean Toothbrush,2,229.99
+10225,Clothing,Old Navy Mid-Rise Rockstar Super Skinny Jeans,2,44.99
+10226,Books,The Silent Patient by Alex Michaelides,3,26.99
+10227,Beauty Products,The Ordinary Caffeine Solution 5% + EGCG,1,6.7
+10228,Sports,Fitbit Luxe,2,149.95
+10229,Electronics,Google Nest Wifi Router,1,169
+10230,Home Appliances,Anova Precision Oven,1,599
+10231,Clothing,Adidas Originals Trefoil Hoodie,4,64.99
+10232,Books,Dune by Frank Herbert,2,9.99
+10233,Beauty Products,Fresh Sugar Lip Treatment,1,24
+10234,Sports,Hydro Flask Standard Mouth Water Bottle,3,32.95
+10235,Electronics,Bose QuietComfort 35 II Wireless Headphones,1,299
+10236,Home Appliances,Nespresso Vertuo Next Coffee and Espresso Maker,1,159.99
+10237,Clothing,Nike Air Force 1 Sneakers,3,90
+10238,Books,The Handmaid's Tale by Margaret Atwood,3,10.99
+10239,Beauty Products,Sunday Riley Luna Sleeping Night Oil,1,55
+10240,Sports,Yeti Rambler 20 oz Tumbler,2,29.99
