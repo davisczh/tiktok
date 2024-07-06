@@ -1,51 +1,85 @@
 from fastapi import FastAPI, HTTPException
-import test_recommender
+
+from pydantic import BaseModel
+from typing import List, Optional
+
+from test_recommender import *
 
 app = FastAPI()
+products_df = pd.read_csv('df_combined_small.csv')
+client = QdrantClient("localhost", port=6333) 
 
-# Data Models
-class UserPreferences(BaseModel):
-    categories: Optional[List[str]] = None
-    price_range: Optional[List[float]] = None
-    tags: Optional[List[str]] = None
-
-class SearchRequest(BaseModel):
-    username: str
-    preferences: UserPreferences
-
-class SwipeAction(BaseModel):
-    username: str
-    product_id: str
-    swipe_direction: str
+class Preferences(BaseModel):
+    like_product: Optional[List[str]] = None
+    dislike_product: Optional[List[str]] = None
+    iteration: Optional[int] = None
 
 class ProductListingResponse(BaseModel):
     products: List[dict]
 
-# TEST
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-# i) Search product with user preferences (POST)
-@app.post("/preferences", response_model=ProductListingResponse)
-async def search_product(search_request: SearchRequest):
-    conditions = {
-        'category': search_request.preferences.categories[0],
-        'min_price': search_request.preferences.price_range[0],
-        'max_price': search_request.preferences.price_range[1],
-        'title': search_request.preferences.tags[0]
-    }
-    query_vector = test_recommender.model.encode([conditions['title']])
-    
+@app.get("/get_products/{user_id}", response_model=ProductListingResponse)
+async def get_product_recommendations( user_id = str, 
+                                      category: str | None = None, 
+                                      min_price: float | None = None, 
+                                      max_price: float | None = None, 
+                                      title: str | None = None ):
+    conditions = {}
+    if category:
+        conditions = {"category": category}
+    if min_price:
+        conditions = {"min_price": min_price}
+    if max_price:
+        conditions = {"max_price": max_price}
+    if title:
+        conditions = {"title": title}
+
+    query_vector = get_user_vector(user_id)
     query_vector = query_vector / np.linalg.norm(query_vector)
-    filters = test_recommender.create_filters_from_conditions(conditions)
-        
-    product_ids = test_recommender.get_recommendations(query_vector, 5, filters)
-    products = [{"asin": pid, "title": test_recommender.products_df.loc[test_recommender.products_df['asin'] == pid, 'title'].values[0]} for pid in product_ids]
+
+    filters = []
+    if conditions:
+        filters = create_filters_from_conditions(conditions)
+
+    like_product, dislike_product = get_user_feedback(user_id)
+
+    product_ids = get_recommendations(query_vector, 
+                                      5, 
+                                      exclude_ids=like_product+dislike_product, 
+                                      filters=filters)
+
+
+    # Check with carina what to return
+    products = [{"asin": pid, 
+                 "title": products_df.loc[products_df['asin'] == pid, 'title'].values[0]} for pid in product_ids
+                 ]
     
     return {"products": products}
 
+@app.post("/update_preferences/{user_id}") 
+async def update_preferences(user_id : str, 
+                             preferences: Preferences
+                             ):
     
+    like_product = preferences.like_product
+    dislike_product = preferences.dislike_product
+    iteration = preferences.iteration
+
+    if like_product:
+        negative_embeddings = get_vectors_for_asins("amazon_products", like_product)
+    if dislike_product:
+        positive_embeddings = get_vectors_for_asins("amazon_products", dislike_product)
+
+    store_user_feedback(user_id, like_product, dislike_product)
+    query_vector = get_user_vector(user_id)
+    query_vector = refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration)
+    update_user_vector(user_id, query_vector)
+
+    return {"message": "Preferences updated successfully"}
 
 # ii) After every 5 swipe (POST)
 # @app.post("/swipe")

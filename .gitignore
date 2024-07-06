@@ -2,3 +2,4 @@ data/
 qdrant_storage/
 *.csv
 env/
+__pycache__/
