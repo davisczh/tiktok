@@ -45,13 +45,14 @@ async def get_product_recommendations( user_id = str,
                                       title: str | None = None ):
     conditions = {}
     if category:
-        conditions = {"category": category}
-    if min_price:
-        conditions = {"min_price": min_price}
-    if max_price:
-        conditions = {"max_price": max_price}
+        conditions["category"] = category
+    if min_price is not None:
+        conditions["min_price"] = min_price
+    if max_price is not None:
+        conditions["max_price"] = max_price
     if title:
-        conditions = {"title": title}
+        conditions["title"] = title
+
 
     query_vector = get_user_vector(user_id)
     query_vector = query_vector / np.linalg.norm(query_vector)
