@@ -70,11 +70,32 @@ async def get_product_recommendations( user_id = str,
 
 
     # Check with carina what to return
+    # name of product, image , price , rating
     products = [{"asin": pid, 
                  "title": products_df.loc[products_df['asin'] == pid, 'title'].values[0]} for pid in product_ids
                  ]
     
     return {"products": products}
+
+# example 
+# const preferences = {
+#     like_product: ["product1", "product2"],
+#     dislike_product: ["product3"],
+#     iteration: 1
+# };
+
+# // Send the POST request
+# fetch(`/users/${userId}/update_preferences`, {
+#     method: 'POST',
+#     headers: {
+#         'Content-Type': 'application/json'
+#     },
+#     body: JSON.stringify(preferences)
+# })
+# .then(response => response.json())
+# .then(data => console.log(data))
+# .catch(error => console.error('Error:', error));
+
 
 @app.post("/users/{user_id}/update_preferences") 
 async def update_preferences(user_id : str, 
@@ -96,12 +117,3 @@ async def update_preferences(user_id : str,
     update_user_vector(user_id, query_vector)
 
     return {"message": "Preferences updated successfully"}
-
-# ii) After every 5 swipe (POST)
-# @app.post("/swipe")
-
-# iii) 5 listings after initial search (GET)
-# @app.get("/search")
-
-# iv) Updated 5 listings after every 5 swipe (GET)
-# @app.get("/listings")
