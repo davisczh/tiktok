@@ -149,4 +149,4 @@ def interactive_recommendation(conditions=None):
         
         iteration += 1
 
-interactive_recommendation()
+# interactive_recommendation()
