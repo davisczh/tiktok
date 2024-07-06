@@ -22,7 +22,22 @@ class ProductListingResponse(BaseModel):
 async def root():
     return {"message": "Hello World"}
 
-@app.get("/get_products/{user_id}", response_model=ProductListingResponse)
+
+# example query 
+# const userId = "12345";
+# const params = new URLSearchParams({
+#   category: "Electronics",
+#   min_price: "100",
+#   max_price: "500",
+#   title: "Phone"
+# });
+
+# fetch(/get_products/${userId}?${params.toString()})
+#   .then(response => response.json())
+#   .then(data => console.log(data))
+#   .catch(error => console.error('Error:', error));
+ 
+@app.get("/users/{user_id}/get_products", response_model=ProductListingResponse)
 async def get_product_recommendations( user_id = str, 
                                       category: str | None = None, 
                                       min_price: float | None = None, 
@@ -60,7 +75,7 @@ async def get_product_recommendations( user_id = str,
     
     return {"products": products}
 
-@app.post("/update_preferences/{user_id}") 
+@app.post("/users/{user_id}/update_preferences") 
 async def update_preferences(user_id : str, 
                              preferences: Preferences
                              ):
