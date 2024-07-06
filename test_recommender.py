@@ -4,12 +4,8 @@ from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue, SearchRequest,Range,MatchText,MatchAny
 
-# Initialize Qdrant client
-client = QdrantClient("localhost", port=6333) 
+client = QdrantClient("localhost", port=6333)
 
-# Initialize sentence transformer
-model = SentenceTransformer('all-MiniLM-L6-v2')
-products_df = pd.read_csv('df_combined_small.csv')
 
 def refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration, alpha=0.6, beta=0.7, gamma=0.85, decay_rate = 0.95, max_iterations=10):
     decay_factor = decay_rate ** min(iteration, max_iterations)
@@ -31,7 +27,7 @@ def get_recommendations(query_vector, n,filters= [], exclude_ids=None):
     
     return [r.payload['asin'] for r in results if r.payload['asin'] not in (exclude_ids or [])][:n]
 
-def get_vectors_for_asins(client, collection_name, asins):
+def get_vectors_for_asins(collection_name, asins):
     embeddings = []
     for asin in asins:
         try:
@@ -113,3 +109,20 @@ def interactive_recommendation(query_vector,
         print("No more recommendations found.")
         return
     return recommendations
+
+
+def store_user_feedback(user_id, like_product, dislike_product):
+    # Store the user feedback in a database
+    pass
+
+def get_user_vector(user_id):
+    # get the user vector from the database
+    pass
+
+def update_user_vector(user_id, query_vector):
+    # update the user vector in the database
+    pass
+
+def get_user_feedback(user_id):
+    # get the user feedback from the database, liked and disliked products during the swipe
+    return [], []
