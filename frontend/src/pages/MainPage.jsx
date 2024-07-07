@@ -48,7 +48,7 @@ const MainPage = () => {
 
   // Event handler for the search button
   const handleSearch = async () => {
-    if (searchInput.trim()) {
+   
       const currentFilters = { ...filters, title: searchInput };
 
       // Construct query parameters from filters
@@ -82,7 +82,7 @@ const MainPage = () => {
         console.error("Error fetching products:", error);
         // Handle error appropriately here
       }
-    }
+    
   };
 
   const toggleFilterPanel = () => {

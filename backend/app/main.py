@@ -66,12 +66,12 @@ async def root():
  
 @app.get("/users/{user_id}/get_products", response_model=ProductListingResponse)
 async def get_product_recommendations( user_id = str, 
-                                      category: str  = None, 
-                                      min_price: str  = None, 
-                                      max_price: str  = None, 
-                                      trendiness: str = False,
-                                      delivery_time: str = None,
-                                      title: str  = None ):
+                                      category: str  = '', 
+                                      min_price: str  = '', 
+                                      max_price: str  = '', 
+                                      trendiness: str = '',
+                                      delivery_time: int = None,
+                                      title: str  = '' ):
     
     delivery_time = int(delivery_time) if delivery_time else None
     min_price = float(min_price) if min_price else None
@@ -117,8 +117,10 @@ async def get_product_recommendations( user_id = str,
                                       exclude_ids=like_product+dislike_product, 
                                       filters=filters)
     if not product_ids:
+
         logger.error("No recommendations found, filters may be too specific")
-        return {"message": "No recommendations found"}
+        
+        return ProductListingResponse(products=[])
     
     logger.info("Product ids: %s", product_ids)
     products = [

@@ -8,9 +8,9 @@ client = QdrantClient("qdrant", port=6333)
 
 # mock database
 delivery_time_mapping = {
-    2 : ['Singapore'],
+    2 : ['Singapore', 'Malaysia'],
     3 : ['Indonesia'],
-    7 : ['China'],
+    7 : ['China', 'Japan', 'Korea'],
 }
 # user_id : user_vector
 user_vectors = {}
@@ -131,11 +131,17 @@ def create_filters_from_conditions(conditions):
             filters.append(FieldCondition(key="price", range=Range(**price_range)))
 
     if 'trendiness' in conditions and conditions['trendiness']:
-        filters.append(FieldCondition(key="isBestSeller", match=MatchValue(value=True)))
+        trendiness_convert = {'High': 2000, 'Med': 1000, 'Low': 500}
+        bought_threadhold = trendiness_convert[conditions['trendiness']]
+        filters.append(  FieldCondition(
+                    key="boughtInLastMonth",
+                    range=Range(
+                        gte=bought_threadhold
+                        )))
 
     if 'delivery_time' in conditions and conditions['delivery_time']:
         countries = delivery_time_mapping[conditions['delivery_time']]
-        filters.append(FieldCondition(key="origin_country", match=MatchAny(values=countries)))
+        filters.append(FieldCondition(key="origin_country", match=MatchAny(any=countries)))
 
     if 'title' in conditions and conditions['title']:
         filters.append(FieldCondition(key="title", match=MatchText(text=conditions['title'])))
