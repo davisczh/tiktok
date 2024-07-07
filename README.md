@@ -27,8 +27,18 @@ pip install -r requirements.txt
 
 5. Open `data_ingestion.ipynb` and run all cells.
 
-6. Run the test recommender script
+# TO ADD FRONTEND
 
 ```
-python test_recommender.py
+project-root/
+├── backend/
+│ ├── app/
+│ │ ├── main.py
+│ │ └── utils.py
+│ ├── Dockerfile
+│ └── requirements.txt
+├── data/
+│ └── df_combined_small.csv
+├── docker-compose.yml
+└── ...
 ```
