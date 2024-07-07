@@ -9,9 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 origins = [
-    "http://localhost",
-    "http://localhost:3000",  # React development server
-    # Add other origins you want to allow
+    "*",  # Allow all origins
 ]
 
 app.add_middleware(
@@ -20,7 +18,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
-)
+)   
 logging.basicConfig(
     level=logging.INFO, 
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",

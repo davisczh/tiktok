@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import BottomNav from "../components/BottomNav";
 import ForYouCard from "../components/ForYouCard";
 import { PreferencesContext } from "./Preferences";
@@ -8,14 +9,22 @@ import { PreferencesContext } from "./Preferences";
 import "./ForYouPage2.css";
 
 const ForYouPage2 = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  // const userId = location.state?.userId || "defaultUserId"; // Default to "defaultUserId" if no userId is provided
+  // console.log(userId);
+  // const url = `http://localhost:8000/users/${userId}/get_products`;
+  // const response = axios.get(url);
+  // console.log("Response:", response.data);
+  // const products = response.data.products; // Adjust this based on your actual response structure
+
   const products = [
     { id: 1, name: "Product 1", image: "/assets/lululemon.jpg" },
     { id: 2, name: "Product 2", image: "/assets/cosbag.jpg" },
     { id: 3, name: "Product 3", image: "/assets/headphones.jpg" },
   ];
 
-  const navigate = useNavigate();
-  const location = useLocation();
+
 
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [lastTap, setLastTap] = useState(0);
@@ -116,7 +125,7 @@ const ForYouPage2 = () => {
 
   const sendPreferencesToBackend = () => {
     console.log("Sending preferences to backend:", preferences);
-
+    const response = axios.post(`http://localhost:8000/users/${userId}/update_preferences}`);
     // Placeholder for the actual API call to send data to the backend
     // fetch("/api/send-preferences", {
     //   method: "POST",
