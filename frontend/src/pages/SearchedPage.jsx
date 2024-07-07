@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./SearchedPage.css";
 
 const SearchedPage = () => {
-  const [activeTab, setActiveTab] = useState("Shop");
+  const [activeTab, setActiveTab] = useState("For you");
   const navigate = useNavigate();
 
   const handleTabClick = (tab) => {

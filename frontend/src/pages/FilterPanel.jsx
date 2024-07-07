@@ -69,6 +69,53 @@ const FilterPanel = ({ onClose, onApply }) => {
             Electronics
           </button>
         </div>
+
+        <div className="filter-group">
+          <h3>Trendiness</h3>
+          <button
+            className={`filter-option ${
+              selectedOptions.trendiness === "Low" ? "selected" : ""
+            }`}
+            onClick={() => handleOptionClick("trendiness", "Low")}
+          >
+            Low
+          </button>
+          <button
+            className={`filter-option ${
+              selectedOptions.trendiness === "Med" ? "selected" : ""
+            }`}
+            onClick={() => handleOptionClick("trendiness", "Med")}
+          >
+            Med
+          </button>
+          <button
+            className={`filter-option ${
+              selectedOptions.trendiness === "High" ? "selected" : ""
+            }`}
+            onClick={() => handleOptionClick("trendiness", "High")}
+          >
+            High
+          </button>
+        </div>
+        <div className="filter-group">
+          <h3>Delivery Timeline</h3>
+          <button
+            className={`filter-option ${
+              selectedOptions.delivery === "1-2 days" ? "selected" : ""
+            }`}
+            onClick={() => handleOptionClick("delivery", "1-2 days")}
+          >
+            1-2 days
+          </button>
+          <button
+            className={`filter-option ${
+              selectedOptions.delivery === "5-7 days" ? "selected" : ""
+            }`}
+            onClick={() => handleOptionClick("delivery", "5-7 days")}
+          >
+            5-7 days
+          </button>
+        </div>
         <div className="filter-group">
           <h3>Budget</h3>
           <div className="budget-inputs">
