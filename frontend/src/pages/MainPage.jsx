@@ -62,7 +62,7 @@ const MainPage = () => {
       }).toString();
 
       // Construct the full URL using the userId
-      const url = `/users/${userId}/get_products?${queryParams}`;
+      const url = `http://localhost:8000/users/${userId}/get_products?${queryParams}`;
 
       // Log the constructed URL to the console
       console.log("Constructed URL:", url);
@@ -70,9 +70,10 @@ const MainPage = () => {
       try {
         // Perform the GET request using Axios
         const response = await axios.get(url);
+        console.log("Response:", response.data);
         const products = response.data.products; // Adjust this based on your actual response structure
         setFilteredProducts(products);
-
+        
         // Navigate to the searched page with the results
         navigate("/searched", {
           state: { query: searchInput, filters: currentFilters, products },
