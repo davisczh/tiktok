@@ -5,29 +5,29 @@
 - Docker
 - Python 3.7+
 
+## Install requirements to run the notebook to ingest data into the locally hosted database
+
 1. Pull the Qdrant Docker image:
 
 ```
 docker pull qdrant/qdrant
-```
 
-2. Run the Qdrant container:
-
-```
-docker run -p 6333:6333 -p 6334:6334     -v $(pwd)/qdrant_storage:/qdrant/storage:z     qdrant/qdrant
-```
-
-3. Verify Qdrant is running by visiting `http://localhost:6333/dashboard` in your browser.
-
-4. Install requirements
-
-```
 pip install -r requirements.txt
 ```
 
-5. Open `data_ingestion.ipynb` and run all cells.
+2. Verify Qdrant is running by visiting `http://localhost:6333/dashboard` in your browser.
 
-# TO ADD FRONTEND
+3. Open `data_ingestion.ipynb` and run all cells.
+
+## Start the app
+
+At project-root directory, run
+
+```docker compose --build
+
+```
+
+# Project directory TO ADD FRONTEND
 
 ```
 project-root/
