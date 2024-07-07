@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import "./MainPage.css";
 import BottomNav from "../components/BottomNav";
 import FilterPanel from "./FilterPanel";
@@ -62,21 +62,21 @@ const MainPage = () => {
       }).toString();
 
       // Construct the full URL using the userId
-      const url = `http://localhost:8000/users/${userId}/get_products?${queryParams}`;
+      const url = `/users/${userId}/get_products?${queryParams}`;
 
       // Log the constructed URL to the console
       console.log("Constructed URL:", url);
 
       try {
         // Perform the GET request using Axios
-        const response = await axios.get(url);
+        const response = await api.get(url);
         console.log("Response:", response.data);
         const products = response.data.products; // Adjust this based on your actual response structure
         setFilteredProducts(products);
         
         // Navigate to the searched page with the results
         navigate("/searched", {
-          state: { query: searchInput, filters: currentFilters, products },
+          state: { query: searchInput, filters: currentFilters, products, userId },
         });
       } catch (error) {
         console.error("Error fetching products:", error);

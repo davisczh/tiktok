@@ -20,7 +20,8 @@ const SearchedPage = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (tab === "For you") {
-      navigate("/foryou");
+      console.log(location.state);
+      navigate("/foryou", {state : {userId: location.state.userId } });
     }
   };
 

@@ -31,8 +31,9 @@ logger = logging.getLogger(__name__)
 products_df = pd.read_csv('data/df_combined_small.csv')
 
 class Preferences(BaseModel):
-    like_product: Optional[List[str]] = None
-    dislike_product: Optional[List[str]] = None
+    like_product: Optional[List[str]] = []
+    dislike_product: Optional[List[str]] = []
+    pass_product: Optional[List[str]] = []
     iteration: Optional[int] = 1
 class Product(BaseModel):
     asin: str
@@ -163,6 +164,9 @@ async def update_preferences(user_id : str,
     dislike_product = preferences.dislike_product
     iteration = preferences.iteration
 
+    positive_embeddings = []
+    negative_embeddings = []
+    
     if like_product:
         logger.info("Generating like_products embeddings for user preferences")
         negative_embeddings = get_vectors_for_asins("amazon_products", like_product)

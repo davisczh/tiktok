@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import BottomNav from "../components/BottomNav";
 import ForYouCard from "../components/ForYouCard";
 import { PreferencesContext } from "./Preferences";
@@ -9,34 +9,58 @@ import { PreferencesContext } from "./Preferences";
 import "./ForYouPage2.css";
 
 const ForYouPage2 = () => {
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const [currentProductIndex, setCurrentProductIndex] = useState(0);
+  const [lastTap, setLastTap] = useState(0);
+  const [activeTab, setActiveTab] = useState("For you");
+  const { preferences, addPreference } = useContext(PreferencesContext);
+
+  console.log(location);
   // const userId = location.state?.userId || "defaultUserId"; // Default to "defaultUserId" if no userId is provided
   // console.log(userId);
   // const url = `http://localhost:8000/users/${userId}/get_products`;
   // const response = axios.get(url);
   // console.log("Response:", response.data);
   // const products = response.data.products; // Adjust this based on your actual response structure
+  // const handleSearch = async () => {
+  //   const response = await api.get(`/users/${location.state.userId}/get_products`);
+  //   console.log(response);
+  //   const products = response.data.products;
+  //   console.log('products', products);
+  //   return products
+  // }
+  // const products = handleSearch()
+  useEffect(() => {
+    const handleSearch = async () => {
+      try {
+        const response = await api.get(`/users/${location.state.userId}/get_products`);
+        console.log('API response', response);
+        const products = response.data.products;
+        console.log('Fetched products', products);
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    
+    handleSearch();
+  }, [location.state.userId]);
 
-  const products = [
-    { id: 1, name: "Product 1", image: "/assets/lululemon.jpg" },
-    { id: 2, name: "Product 2", image: "/assets/cosbag.jpg" },
-    { id: 3, name: "Product 3", image: "/assets/headphones.jpg" },
-  ];
+  console.log('done');
+  
 
 
-
-  const [currentProductIndex, setCurrentProductIndex] = useState(0);
-  const [lastTap, setLastTap] = useState(0);
-  const [activeTab, setActiveTab] = useState("For you");
-  const { preferences, addPreference } = useContext(PreferencesContext);
 
   useEffect(() => {
     if (location.state && location.state.currentProductIndex !== undefined) {
       const index = location.state.currentProductIndex;
+      console.log('index', index);
       if (index !== currentProductIndex) {
         setCurrentProductIndex(index);
-        const productKey = `product${index + 1}`;
+        const productKey = products[index + 1]['asin'];
+        console.log('productKey:', productKey);
         addPreference("checked_product", productKey);
       }
     }
@@ -81,7 +105,7 @@ const ForYouPage2 = () => {
   };
 
   const handleSwipeUp = () => {
-    const productKey = `product${currentProductIndex + 1}`;
+    const productKey = products[index]['asin'];
     updatePreferences(productKey, "NotInterested");
 
     if (currentProductIndex < products.length - 1) {
@@ -92,7 +116,7 @@ const ForYouPage2 = () => {
   };
 
   const handleSwipeLeft = () => {
-    const productKey = `product${currentProductIndex + 1}`;
+    const productKey = products[index]['asin'];
     updatePreferences(productKey, "CheckListing");
 
     navigate("/shopping", {
@@ -103,17 +127,24 @@ const ForYouPage2 = () => {
   const handleTap = (e) => {
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTap;
+    console.log("Tap detected. Tap length:", tapLength);
 
     if (tapLength < 300 && tapLength > 0) {
+      console.log("Double tap detected.");
       handleDoubleClick();
     }
 
     setLastTap(currentTime);
   };
-
   const handleDoubleClick = () => {
-    const productKey = `product${currentProductIndex + 1}`;
-    updatePreferences(productKey, "Like");
+    const productKey = products[index]['asin'];
+    console.log("Double click action for:", productKey);
+    if (currentProductIndex < products.length - 1) {
+      updatePreferences(productKey, "Like");
+      setCurrentProductIndex(currentProductIndex + 1);
+    } else {
+      sendPreferencesToBackend();
+    }
   };
 
   const swipeHandlers = useSwipeable({
@@ -123,10 +154,15 @@ const ForYouPage2 = () => {
     trackMouse: true,
   });
 
-  const sendPreferencesToBackend = () => {
+  const sendPreferencesToBackend = async () => {
     console.log("Sending preferences to backend:", preferences);
-    const response = axios.post(`http://localhost:8000/users/${userId}/update_preferences}`);
-    // Placeholder for the actual API call to send data to the backend
+    try {
+      const response = await api.post(`/users/${location.state.userId}/update_preferences`, preferences);
+      console.log("Preferences successfully sent to backend:", response.data);
+      const response1 = await api.get()
+    } catch (error) {
+      console.error("Error sending preferences to backend:", error);
+    }    // Placeholder for the actual API call to send data to the backend
     // fetch("/api/send-preferences", {
     //   method: "POST",
     //   headers: {
@@ -135,8 +171,10 @@ const ForYouPage2 = () => {
     //   body: JSON.stringify(preferences),
     // });
   };
-
+  console.log('currentindex', currentProductIndex);
+  console.log('test products', products)
   const currentProduct = products[currentProductIndex];
+  console.log('currentProduct', currentProduct);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -198,7 +236,7 @@ const ForYouPage2 = () => {
           LIVE
         </button>
       </div>
-      <ForYouCard product={currentProduct} />
+        <ForYouCard product={currentProduct} />
       <BottomNav />
     </div>
   );
