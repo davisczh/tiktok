@@ -1,13 +1,19 @@
 import numpy as np
 from qdrant_client import QdrantClient
-from qdrant_client.http.models import Filter, FieldCondition, MatchValue, SearchRequest,Range,MatchText,MatchAny
+from qdrant_client.http.models import Filter, FieldCondition, MatchValue,Range,MatchText,MatchAny
 
 
-client = QdrantClient("localhost", port=6333) 
+client = QdrantClient("qdrant", port=6333) 
 
 
 # mock database
 
+
+delivery_time_mapping = {
+    2 : ['Singapore'],
+    3 : ['Indonesia'],
+    7 : ['China'],
+}
 # user_id : user_vector
 user_vectors = {}
 # user_id : liked_product in a list of asin
@@ -46,23 +52,25 @@ def refine_query_vector(query_vector, positive_embeddings, negative_embeddings, 
 
 def get_popular_products_vector():
     query_vector = np.random.rand(384)
-
-    results = client.search(
+    # define popular, currently is hardcoded to more than 2000 bought in the last month
+    bought_threadhold = 2000
+    result = client.search(
         collection_name="amazon_products",
         query_vector=query_vector.tolist(),
         limit=1,
         query_filter=Filter(
             must=[
                 FieldCondition(
-                    key="isBestSeller",
-                    match=True
-                )
+                    key="boughtInLastMonth",
+                    range=Range(
+                        gte=bought_threadhold
+                        ))]
+                ),
+        with_vectors=True,
 
-            ]
-                )
         )
-    
-    return [r.payload['asin'] for r in results][:n]
+    return result[0].vector
+
 def get_recommendations(query_vector, n,filters= [], exclude_ids=None):
     results = client.search(
         collection_name="amazon_products",
@@ -92,7 +100,7 @@ def get_vectors_for_asins(collection_name, asins):
                 ),
                 with_vectors=True,
                 limit=1 )
-            
+            print(search_results)
             if search_results and search_results[0][0]:
                 vector = search_results[0][0].vector
                 embeddings.append(vector)
@@ -111,7 +119,6 @@ def create_filters_from_conditions(conditions):
         return filters
 
     if 'category' in conditions and conditions['category']:
-
         filters.append(FieldCondition(key="category_name", match=MatchText(text=conditions['category'])))
     
     if 'min_price' in conditions or 'max_price' in conditions:
@@ -122,7 +129,14 @@ def create_filters_from_conditions(conditions):
             price_range['lte'] = float(conditions['max_price'])
         if price_range:
             filters.append(FieldCondition(key="price", range=Range(**price_range)))
-    
+
+    if 'trendiness' in conditions and conditions['trendiness']:
+        filters.append(FieldCondition(key="isBestSeller", match=MatchValue(value=True)))
+
+    if 'delivery_time' in conditions and conditions['delivery_time']:
+        countries = delivery_time_mapping[conditions['delivery_time']]
+        filters.append(FieldCondition(key="origin_country", match=MatchAny(values=countries)))
+
     if 'title' in conditions and conditions['title']:
         filters.append(FieldCondition(key="title", match=MatchText(text=conditions['title'])))
 
@@ -148,7 +162,7 @@ def interactive_recommendation(query_vector,
     query_vector = query_vector / np.linalg.norm(query_vector)
 
     filters = create_filters_from_conditions(conditions)
-    print(filters)
+    # print(filters)
 
     recommendations = get_recommendations(query_vector, n=3, exclude_ids=positive_ids + negative_ids, filters=filters)
     if not recommendations:

@@ -21,10 +21,15 @@ products_df = pd.read_csv('data/df_combined_small.csv')
 class Preferences(BaseModel):
     like_product: Optional[List[str]] = None
     dislike_product: Optional[List[str]] = None
-    iteration: Optional[int] = None
-
+    iteration: Optional[int] = 1
+class Product(BaseModel):
+    asin: str
+    title: str
+    imgUrl: str
+    price: float
+    stars: float
 class ProductListingResponse(BaseModel):
-    products: List[dict]
+    products: List[Product]
 
 
 @app.get("/")
@@ -51,6 +56,8 @@ async def get_product_recommendations( user_id = str,
                                       category: str  = None, 
                                       min_price: float  = None, 
                                       max_price: float  = None, 
+                                      trendiness: bool = False,
+                                      delivery_time: int = None,
                                       title: str  = None ):
     conditions = {}
     if category:
@@ -61,20 +68,28 @@ async def get_product_recommendations( user_id = str,
         conditions["max_price"] = max_price
     if title:
         conditions["title"] = title
+    if trendiness:
+        conditions["trendiness"] = trendiness
+    if delivery_time:
+        conditions["delivery_time"] = delivery_time
 
-
+    logger.info("Getting products for user %s with conditions %s", user_id, conditions)
     query_vector = get_user_vector(user_id)
     if query_vector is None:
         # if we store user's history in the future, we can get relevant products from the user's history
         logger.info("User vector not found, getting random popular products instead")
         query_vector = get_popular_products_vector()
+        update_user_vector(user_id, query_vector)
+        if query_vector is None:
+            logger.error("No popular products found, should not happen")
+            return {"message": "No popular products found"}
 
     query_vector = query_vector / np.linalg.norm(query_vector)
 
     filters = []
     if conditions:
         filters = create_filters_from_conditions(conditions)
-        logger.info("Filters created: %s", filters)
+        logger.info("Filters created")
 
     like_product, dislike_product = get_user_feedback(user_id)
 
@@ -83,7 +98,7 @@ async def get_product_recommendations( user_id = str,
                                       5, 
                                       exclude_ids=like_product+dislike_product, 
                                       filters=filters)
-    
+    logger.info("Product ids: %s", product_ids)
     products = [
         {
             "asin": pid,
@@ -94,7 +109,9 @@ async def get_product_recommendations( user_id = str,
         }
         for pid in product_ids
     ]
-    return products
+    products_list = [Product(**product) for product in products]
+    
+    return ProductListingResponse(products=products_list)
 
 # example 
 # const preferences = {
@@ -137,7 +154,7 @@ async def update_preferences(user_id : str,
     query_vector = get_user_vector(user_id)
 
     if query_vector is None:
-        logger.error("User vector not found, should not happen, update_preferences is called before get_products")
+        logger.error("User vector not found, should not happen, update_preferences should not be called before get_products")
         return {"message": "User vector not found"}
     
 
