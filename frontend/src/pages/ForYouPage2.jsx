@@ -40,7 +40,8 @@ const ForYouPage2 = () => {
       console.log('API response', response);
       const fetchedProducts = response.data.products;
       console.log('Fetched products', fetchedProducts);
-      setProducts(prevProducts => [...prevProducts, ...fetchedProducts]);
+      setProducts(fetchedProducts);  // This replaces the old products with new ones
+      setCurrentProductIndex(0);  // Reset the index to start from the first new product
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
@@ -164,11 +165,10 @@ const ForYouPage2 = () => {
       const response = await api.post(`/users/${location.state.userId}/update_preferences`, preferences);
       console.log("Preferences successfully sent to backend:", response.data);
       
-      // Fetch more products
+      // Fetch new products
       await fetchProducts();
       
-      // Reset current product index to start showing new products
-      setCurrentProductIndex(prevIndex => prevIndex + 1);
+      // No need to increment currentProductIndex here as it's reset in fetchProducts
     } catch (error) {
       console.error("Error sending preferences to backend:", error);
     } finally {

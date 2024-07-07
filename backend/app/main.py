@@ -186,6 +186,7 @@ async def update_preferences(user_id : str,
     
 
     query_vector = refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration)
+    logger.warn("Query vector refined for user %s", user_id)
     update_user_vector(user_id, query_vector)
     logger.info("User vector updated for user %s", user_id)
 
