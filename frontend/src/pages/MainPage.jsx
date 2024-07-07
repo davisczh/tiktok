@@ -14,7 +14,7 @@ const MainPage = () => {
   const [filters, setFilters] = useState({}); // State to store applied filters
   const navigate = useNavigate();
 
-  // Sample product data
+  // Sample product data to show inital products
   const products = [
     {
       id: 1,
@@ -48,8 +48,12 @@ const MainPage = () => {
 
   // Event handler for the search button
   const handleSearch = async () => {
-   
-      const currentFilters = { ...filters, title: searchInput };
+    let currentFilters = { ...filters, title: '' };
+
+    if (!searchInput.trim()) {
+      currentFilters = { ...filters, title: searchInput };
+    }
+ 
 
       // Construct query parameters from filters
       const queryParams = new URLSearchParams({

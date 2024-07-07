@@ -70,7 +70,7 @@ async def get_product_recommendations( user_id = str,
                                       min_price: str  = '', 
                                       max_price: str  = '', 
                                       trendiness: str = '',
-                                      delivery_time: int = None,
+                                      delivery_time: str = '',
                                       title: str  = '' ):
     
     delivery_time = int(delivery_time) if delivery_time else None

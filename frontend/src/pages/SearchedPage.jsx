@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./SearchedPage.css";
 
 const SearchedPage = () => {
-  const [activeTab, setActiveTab] = useState("For you");
+  const [activeTab, setActiveTab] = useState("Shop");
   const navigate = useNavigate();
   const location = useLocation();
   const [products, setProducts] = useState([]);
@@ -97,7 +97,6 @@ const SearchedPage = () => {
         </button>
       </div>
       <div className="sort-tabs">
-        <button className="sort-tab active">Best match</button>
         <button className="sort-tab">Bestsellers</button>
         <button className="sort-tab">Price</button>
       </div>

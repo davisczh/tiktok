@@ -20,8 +20,8 @@ const FilterPanel = ({ onClose, onApply }) => {
 
   const handleApply = () => {
     const deliveryMapping = {
-      "1-2 days": 2,
-      "5-7 days": 7
+      "1-2 days": '2',
+      "5-7 days": '7'
     };
 
     const filters = {
