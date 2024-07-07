@@ -71,7 +71,7 @@ const ForYouPage2 = () => {
     fetchProducts();
   }, [location.state.userId]);
 
-  console.log('done');
+  // console.log('done');
   
 
 
@@ -140,9 +140,9 @@ const ForYouPage2 = () => {
   const handleSwipeLeft = () => {
     const productKey = products[currentProductIndex]['asin'];
     updatePreferences(productKey, "CheckListing");
-
+    console.log('products[currentproductindex]',products[currentProductIndex]);
     navigate("/shopping", {
-      state: { currentProductIndex, preferences },
+      state: products[currentProductIndex], currentProductIndex 
     });
   };
 

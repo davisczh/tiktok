@@ -7,26 +7,28 @@ import "./ShoppingPage.css";
 const ShoppingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentProductIndex, preferences } = location.state || {};
+  const currentProductIndex = location.currentProductIndex
 
   // Mock product data for demonstration
-  const product = {
-    id: 1,
-    name: "PRISM+ W240",
-    image: "/assets/monitor.jpg",
-    description: "Flat IPS Productivity Monitor",
-    specs: "24'' | FHD | IPS | 100Hz | 100% SRGB",
-    price: 119.6,
-    originalPrice: 249.0,
-    discount: 52,
-    rating: 4.5,
-    reviews: 8,
-    sold: 193,
-  };
+  // const product = {
+  //   id: 1,
+  //   name: "PRISM+ W240",
+  //   image: "/assets/monitor.jpg",
+  //   description: "Flat IPS Productivity Monitor",
+  //   specs: "24'' | FHD | IPS | 100Hz | 100% SRGB",
+  //   price: 119.6,
+  //   originalPrice: 249.0,
+  //   discount: 52,
+  //   rating: 4.5,
+  //   reviews: 8,
+  //   sold: 193,
+  // };
+  const product = location.state
+  console.log("ShoppingPage product", product);
 
   const handleSwipeRight = () => {
     navigate("/foryou", {
-      state: { currentProductIndex, preferences },
+      state: { currentProductIndex },
     });
   };
 
@@ -56,10 +58,10 @@ const ShoppingPage = () => {
       </header>
       <div className="content">
         <div className="product-image">
-          <img src={product.image} alt={product.name} />
+          <img src={product.imgUrl || "/path/to/your/image.jpg"} alt={product.title} />
         </div>
         <div className="product-details">
-          <h1>{product.name}</h1>
+          <h1>{product.title}</h1>
           <h2>{product.description}</h2>
           <p>{product.specs}</p>
           <div className="flash-sale">
@@ -73,7 +75,7 @@ const ShoppingPage = () => {
           </div>
           <div className="rating">
             <span>
-              ⭐ {product.rating} ({product.reviews})
+              ⭐ {product.rating} ({product.reviews} reviews)
             </span>
             <span>{product.sold} sold</span>
           </div>
