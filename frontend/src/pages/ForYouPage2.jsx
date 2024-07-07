@@ -34,15 +34,33 @@ const ForYouPage2 = () => {
   // }
   // const products = handleSearch()
   const fetchProducts = async () => {
+    console.log('state', location.state.filters);
+    const currentFilters = location.state.filters;
+
+      // Construct query parameters from filters
+      const queryParams = new URLSearchParams({
+        category: currentFilters.category || "",
+        min_price: currentFilters.min_price || "",
+        max_price: currentFilters.max_price || "",
+        title: currentFilters.title || "",
+        trendiness: currentFilters.trendiness || "",
+        delivery_time: currentFilters.delivery || "",
+      }).toString();
+
+      // Construct the full URL using the userId
+      const url = `/users/${location.state.userId}/get_products?${queryParams}`;
+
+      // Log the constructed URL to the console
+      console.log("Constructed URL:", url);
+
     try {
       setLoading(true);
-      const response = await api.get(`/users/${location.state.userId}/get_products`);
+      const response = await api.get(url);
       console.log('API response', response);
       const fetchedProducts = response.data.products;
       console.log('Fetched products', fetchedProducts);
       setProducts(fetchedProducts);  // This replaces the old products with new ones
-      setCurrentProductIndex(0);  // Reset the index to start from the first new product
-    } catch (error) {
+      setCurrentProductIndex(0);  // Reset the index to start from the first new product    } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
