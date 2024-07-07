@@ -23,11 +23,13 @@ pip install -r requirements.txt
 
 At project-root directory, run
 
-```docker compose --build
-
+```
+docker compose --build
 ```
 
 # Project directory TO ADD FRONTEND
+
+# NOTE: df_combined_small.csv will be generated from data_ingestion.ipynb
 
 ```
 project-root/
@@ -38,6 +40,9 @@ project-root/
 │ ├── Dockerfile
 │ └── requirements.txt
 ├── data/
+| ├── archive/
+│ │ ├── amazon_products.csv
+│ │ └── amazon_categories.csv
 │ └── df_combined_small.csv
 ├── docker-compose.yml
 └── ...
