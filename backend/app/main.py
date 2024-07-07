@@ -10,13 +10,13 @@ logging.basicConfig(
     level=logging.INFO, 
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.StreamHandler()  # You can add more handlers, such as FileHandler
+        logging.StreamHandler() 
     ]
 )
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
-products_df = pd.read_csv('df_combined_small.csv')
+products_df = pd.read_csv('data/df_combined_small.csv')
 
 class Preferences(BaseModel):
     like_product: Optional[List[str]] = None
@@ -48,10 +48,10 @@ async def root():
  
 @app.get("/users/{user_id}/get_products", response_model=ProductListingResponse)
 async def get_product_recommendations( user_id = str, 
-                                      category: str | None = None, 
-                                      min_price: float | None = None, 
-                                      max_price: float | None = None, 
-                                      title: str | None = None ):
+                                      category: str  = None, 
+                                      min_price: float  = None, 
+                                      max_price: float  = None, 
+                                      title: str  = None ):
     conditions = {}
     if category:
         conditions["category"] = category
