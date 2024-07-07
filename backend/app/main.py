@@ -174,7 +174,9 @@ async def update_preferences(user_id : str,
     if dislike_product:
         logger.info("Generating like_products embeddings for user preferences")
         positive_embeddings = get_vectors_for_asins("amazon_products", dislike_product)
-
+    
+    logger.info("User %s likes %s", user_id, like_product)
+    logger.info("User %s dislikes %s", user_id, dislike_product)
     store_user_feedback(user_id, like_product, dislike_product)
     query_vector = get_user_vector(user_id)
 

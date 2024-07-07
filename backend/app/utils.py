@@ -42,7 +42,7 @@ def get_user_feedback(user_id):
     # get the user feedback from the database, liked and disliked products during the swipe
     return user_like_visited_products.get(user_id, []), user_dislike_visited_products.get(user_id, [])
 
-def refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration, alpha=0.6, beta=0.7, gamma=0.85, decay_rate = 0.95, max_iterations=10):
+def refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration, alpha=0.6, beta=0.8, gamma=0.85, decay_rate = 0.99, max_iterations=30):
     decay_factor = decay_rate ** min(iteration, max_iterations)
     if positive_embeddings:
         query_vector += (alpha * gamma * decay_factor) * np.mean(positive_embeddings, axis=0)

@@ -15,6 +15,7 @@ const ForYouPage2 = () => {
   const [currentProductIndex, setCurrentProductIndex] = useState(0);
   const [lastTap, setLastTap] = useState(0);
   const [activeTab, setActiveTab] = useState("For you");
+  const [fetchingMore, setFetchingMore] = useState(false);
   const { preferences, addPreference } = useContext(PreferencesContext);
   const [loading, setLoading] = useState(true);
   console.log(location);
@@ -32,23 +33,22 @@ const ForYouPage2 = () => {
   //   return products
   // }
   // const products = handleSearch()
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get(`/users/${location.state.userId}/get_products`);
+      console.log('API response', response);
+      const fetchedProducts = response.data.products;
+      console.log('Fetched products', fetchedProducts);
+      setProducts(prevProducts => [...prevProducts, ...fetchedProducts]);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get(`/users/${location.state.userId}/get_products`);
-        console.log('API response', response);
-        const fetchedProducts = response.data.products;
-        console.log('Fetched products', fetchedProducts);
-        setProducts(fetchedProducts);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
     fetchProducts();
   }, [location.state.userId]);
 
@@ -159,21 +159,21 @@ const ForYouPage2 = () => {
 
   const sendPreferencesToBackend = async () => {
     console.log("Sending preferences to backend:", preferences);
+    setFetchingMore(true);
     try {
       const response = await api.post(`/users/${location.state.userId}/update_preferences`, preferences);
       console.log("Preferences successfully sent to backend:", response.data);
-      const response1 = await api.get()
-      console.log('response1', response1);
+      
+      // Fetch more products
+      await fetchProducts();
+      
+      // Reset current product index to start showing new products
+      setCurrentProductIndex(prevIndex => prevIndex + 1);
     } catch (error) {
       console.error("Error sending preferences to backend:", error);
-    }    // Placeholder for the actual API call to send data to the backend
-    // fetch("/api/send-preferences", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(preferences),
-    // });
+    } finally {
+      setFetchingMore(false);
+    }
   };
   console.log('currentindex', currentProductIndex);
   console.log('test products', products)
@@ -247,6 +247,9 @@ const ForYouPage2 = () => {
       ) : (
         <div className="no-products">No products available</div>
       )}
+      
+      {fetchingMore && <div className="loading">Fetching more products...</div>}
+      
       <BottomNav />
     </div>
   );
