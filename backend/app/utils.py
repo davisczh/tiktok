@@ -80,6 +80,8 @@ def get_recommendations(query_vector, n,filters= [], exclude_ids=None):
             must=filters
                 )
         )
+    if not results:
+        return []
     return [r.payload['asin'] for r in results if r.payload['asin'] not in (exclude_ids or [])][:n]
 
 def get_vectors_for_asins(collection_name, asins):

@@ -16,7 +16,7 @@ const ForYouPage2 = () => {
   const [lastTap, setLastTap] = useState(0);
   const [activeTab, setActiveTab] = useState("For you");
   const { preferences, addPreference } = useContext(PreferencesContext);
-
+  const [loading, setLoading] = useState(true);
   console.log(location);
   // const userId = location.state?.userId || "defaultUserId"; // Default to "defaultUserId" if no userId is provided
   // console.log(userId);
@@ -32,25 +32,28 @@ const ForYouPage2 = () => {
   //   return products
   // }
   // const products = handleSearch()
+
   useEffect(() => {
-    const handleSearch = async () => {
+    const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await api.get(`/users/${location.state.userId}/get_products`);
         console.log('API response', response);
-        const products = response.data.products;
-        console.log('Fetched products', products);
-        setProducts(products);
+        const fetchedProducts = response.data.products;
+        console.log('Fetched products', fetchedProducts);
+        setProducts(fetchedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
       }
     };
     
-    handleSearch();
+    fetchProducts();
   }, [location.state.userId]);
 
   console.log('done');
   
-
 
 
   useEffect(() => {
@@ -65,7 +68,7 @@ const ForYouPage2 = () => {
       }
     }
     console.log("Current Preferences:", preferences);
-  }, [location.state, currentProductIndex, preferences, addPreference]);
+  }, [location.state, currentProductIndex, preferences, addPreference, products]);
 
   const statusPriority = {
     CheckListing: 3,
@@ -105,7 +108,7 @@ const ForYouPage2 = () => {
   };
 
   const handleSwipeUp = () => {
-    const productKey = products[index]['asin'];
+    const productKey = products[currentProductIndex]['asin'];
     updatePreferences(productKey, "NotInterested");
 
     if (currentProductIndex < products.length - 1) {
@@ -116,7 +119,7 @@ const ForYouPage2 = () => {
   };
 
   const handleSwipeLeft = () => {
-    const productKey = products[index]['asin'];
+    const productKey = products[currentProductIndex]['asin'];
     updatePreferences(productKey, "CheckListing");
 
     navigate("/shopping", {
@@ -137,7 +140,7 @@ const ForYouPage2 = () => {
     setLastTap(currentTime);
   };
   const handleDoubleClick = () => {
-    const productKey = products[index]['asin'];
+    const productKey = products[currentProductIndex]['asin'];
     console.log("Double click action for:", productKey);
     if (currentProductIndex < products.length - 1) {
       updatePreferences(productKey, "Like");
@@ -160,6 +163,7 @@ const ForYouPage2 = () => {
       const response = await api.post(`/users/${location.state.userId}/update_preferences`, preferences);
       console.log("Preferences successfully sent to backend:", response.data);
       const response1 = await api.get()
+      console.log('response1', response1);
     } catch (error) {
       console.error("Error sending preferences to backend:", error);
     }    // Placeholder for the actual API call to send data to the backend
@@ -236,7 +240,13 @@ const ForYouPage2 = () => {
           LIVE
         </button>
       </div>
-        <ForYouCard product={currentProduct} />
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : products.length > 0 ? (
+        <ForYouCard product={products[currentProductIndex]} />
+      ) : (
+        <div className="no-products">No products available</div>
+      )}
       <BottomNav />
     </div>
   );
