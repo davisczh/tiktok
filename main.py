@@ -2,12 +2,21 @@ from fastapi import FastAPI, HTTPException
 
 from pydantic import BaseModel
 from typing import List, Optional
+import logging
+from utils import *
+import pandas as pd
 
-from test_recommender import *
+logging.basicConfig(
+    level=logging.INFO, 
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.StreamHandler()  # You can add more handlers, such as FileHandler
+    ]
+)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 products_df = pd.read_csv('df_combined_small.csv')
-client = QdrantClient("localhost", port=6333) 
 
 class Preferences(BaseModel):
     like_product: Optional[List[str]] = None
@@ -55,27 +64,37 @@ async def get_product_recommendations( user_id = str,
 
 
     query_vector = get_user_vector(user_id)
+    if query_vector is None:
+        # if we store user's history in the future, we can get relevant products from the user's history
+        logger.info("User vector not found, getting random popular products instead")
+        query_vector = get_popular_products_vector()
+
     query_vector = query_vector / np.linalg.norm(query_vector)
 
     filters = []
     if conditions:
         filters = create_filters_from_conditions(conditions)
+        logger.info("Filters created: %s", filters)
 
     like_product, dislike_product = get_user_feedback(user_id)
 
+    logger.info("Getting recommendations for user %s", user_id)
     product_ids = get_recommendations(query_vector, 
                                       5, 
                                       exclude_ids=like_product+dislike_product, 
                                       filters=filters)
-
-
-    # Check with carina what to return
-    # name of product, image , price , rating
-    products = [{"asin": pid, 
-                 "title": products_df.loc[products_df['asin'] == pid, 'title'].values[0]} for pid in product_ids
-                 ]
     
-    return {"products": products}
+    products = [
+        {
+            "asin": pid,
+            "title": products_df.loc[products_df['asin'] == pid, 'title'].values[0],
+            "imgUrl": products_df.loc[products_df['asin'] == pid, 'imgUrl'].values[0],
+            "price": products_df.loc[products_df['asin'] == pid, 'price'].values[0],
+            "stars": products_df.loc[products_df['asin'] == pid, 'stars'].values[0]
+        }
+        for pid in product_ids
+    ]
+    return products
 
 # example 
 # const preferences = {
@@ -107,13 +126,23 @@ async def update_preferences(user_id : str,
     iteration = preferences.iteration
 
     if like_product:
+        logger.info("Generating like_products embeddings for user preferences")
         negative_embeddings = get_vectors_for_asins("amazon_products", like_product)
+
     if dislike_product:
+        logger.info("Generating like_products embeddings for user preferences")
         positive_embeddings = get_vectors_for_asins("amazon_products", dislike_product)
 
     store_user_feedback(user_id, like_product, dislike_product)
     query_vector = get_user_vector(user_id)
+
+    if query_vector is None:
+        logger.error("User vector not found, should not happen, update_preferences is called before get_products")
+        return {"message": "User vector not found"}
+    
+
     query_vector = refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration)
     update_user_vector(user_id, query_vector)
+    logger.info("User vector updated for user %s", user_id)
 
     return {"message": "Preferences updated successfully"}

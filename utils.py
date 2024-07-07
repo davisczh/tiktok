@@ -1,11 +1,41 @@
 import numpy as np
-import pandas as pd
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue, SearchRequest,Range,MatchText,MatchAny
 
-client = QdrantClient("localhost", port=6333)
 
+client = QdrantClient("localhost", port=6333) 
+
+
+# mock database
+
+# user_id : user_vector
+user_vectors = {}
+# user_id : liked_product in a list of asin
+user_like_visited_products = {}
+# user_id : disliked_product in a list of asin
+user_dislike_visited_products = {}
+
+def store_user_feedback(user_id, like_product, dislike_product):
+    user_like_visited_products[user_id] = user_like_visited_products.get(user_id, []) + like_product
+    user_dislike_visited_products[user_id] = user_dislike_visited_products.get(user_id, []) + dislike_product
+    return 
+    
+
+def get_user_vector(user_id):
+    
+    if user_id in user_vectors:
+        return user_vectors[user_id]
+    else:
+        return None
+    
+def update_user_vector(user_id, query_vector):
+    user_vectors[user_id] = query_vector
+    return
+
+def get_user_feedback(user_id):
+    # get the user feedback from the database, liked and disliked products during the swipe
+    return user_like_visited_products.get(user_id, []), user_dislike_visited_products.get(user_id, [])
 
 def refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration, alpha=0.6, beta=0.7, gamma=0.85, decay_rate = 0.95, max_iterations=10):
     decay_factor = decay_rate ** min(iteration, max_iterations)
@@ -15,6 +45,25 @@ def refine_query_vector(query_vector, positive_embeddings, negative_embeddings, 
         query_vector -= (beta * gamma * decay_factor) * np.mean(negative_embeddings, axis=0)
     return query_vector / np.linalg.norm(query_vector)
 
+def get_popular_products_vector():
+    query_vector = np.random.rand(384)
+
+    results = client.search(
+        collection_name="amazon_products",
+        query_vector=query_vector.tolist(),
+        limit=1,
+        query_filter=Filter(
+            must=[
+                FieldCondition(
+                    key="isBestSeller",
+                    match=True
+                )
+
+            ]
+                )
+        )
+    
+    return [r.payload['asin'] for r in results][:n]
 def get_recommendations(query_vector, n,filters= [], exclude_ids=None):
     results = client.search(
         collection_name="amazon_products",
@@ -83,7 +132,6 @@ def create_filters_from_conditions(conditions):
 def interactive_recommendation(query_vector, 
                                positive_ids=[], 
                                negative_ids=[],
-                               iteration=5,
                                conditions=None):
     #example conditions
     # conditions = {
@@ -92,7 +140,6 @@ def interactive_recommendation(query_vector,
     #     'max_price': 2000,
     #     'title': 'Apple'
     # }
-
 
     # get 3 different products as a start is better.
     # query_vector below is an example starting vector. 
@@ -111,18 +158,3 @@ def interactive_recommendation(query_vector,
     return recommendations
 
 
-def store_user_feedback(user_id, like_product, dislike_product):
-    # Store the user feedback in a database
-    pass
-
-def get_user_vector(user_id):
-    # get the user vector from the database
-    pass
-
-def update_user_vector(user_id, query_vector):
-    # update the user vector in the database
-    pass
-
-def get_user_feedback(user_id):
-    # get the user feedback from the database, liked and disliked products during the swipe
-    return [], []
