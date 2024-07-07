@@ -24,10 +24,17 @@ pip install -r requirements.txt
 At project-root directory, run
 
 ```
-docker compose --build
+docker compose up --build -d
 ```
 
-# Project directory TO ADD FRONTEND
+Go to frontend directory and start the frontend app
+
+```
+npm install
+npm run dev
+```
+
+# Project directory
 
 # NOTE: df_combined_small.csv will be generated from data_ingestion.ipynb
 
