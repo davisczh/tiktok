@@ -5,7 +5,20 @@ from typing import List, Optional
 import logging
 from utils import *
 import pandas as pd
+from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI()
+origins = [
+    "*",  # Allow all origins
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)   
 logging.basicConfig(
     level=logging.INFO, 
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -15,12 +28,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
 products_df = pd.read_csv('data/df_combined_small.csv')
 
 class Preferences(BaseModel):
-    like_product: Optional[List[str]] = None
-    dislike_product: Optional[List[str]] = None
+    like_product: Optional[List[str]] = []
+    dislike_product: Optional[List[str]] = []
+    pass_product: Optional[List[str]] = []
     iteration: Optional[int] = 1
 class Product(BaseModel):
     asin: str
@@ -53,15 +66,20 @@ async def root():
  
 @app.get("/users/{user_id}/get_products", response_model=ProductListingResponse)
 async def get_product_recommendations( user_id = str, 
-                                      category: str  = None, 
-                                      min_price: float  = None, 
-                                      max_price: float  = None, 
-                                      trendiness: bool = False,
-                                      delivery_time: int = None,
-                                      title: str  = None ):
+                                      category: str  = '', 
+                                      min_price: str  = '', 
+                                      max_price: str  = '', 
+                                      trendiness: str = '',
+                                      delivery_time: str = '',
+                                      title: str  = '' ):
+    
+    delivery_time = int(delivery_time) if delivery_time else None
+    min_price = float(min_price) if min_price else None
+    max_price = float(max_price) if max_price else None
+
     conditions = {}
     if category:
-        conditions["category"] = category
+        conditions["category"] = category.lower()
     if min_price is not None:
         conditions["min_price"] = min_price
     if max_price is not None:
@@ -98,6 +116,12 @@ async def get_product_recommendations( user_id = str,
                                       5, 
                                       exclude_ids=like_product+dislike_product, 
                                       filters=filters)
+    if not product_ids:
+
+        logger.error("No recommendations found, filters may be too specific")
+        
+        return ProductListingResponse(products=[])
+    
     logger.info("Product ids: %s", product_ids)
     products = [
         {
@@ -142,6 +166,9 @@ async def update_preferences(user_id : str,
     dislike_product = preferences.dislike_product
     iteration = preferences.iteration
 
+    positive_embeddings = []
+    negative_embeddings = []
+    
     if like_product:
         logger.info("Generating like_products embeddings for user preferences")
         negative_embeddings = get_vectors_for_asins("amazon_products", like_product)
@@ -149,7 +176,9 @@ async def update_preferences(user_id : str,
     if dislike_product:
         logger.info("Generating like_products embeddings for user preferences")
         positive_embeddings = get_vectors_for_asins("amazon_products", dislike_product)
-
+    
+    logger.info("User %s likes %s", user_id, like_product)
+    logger.info("User %s dislikes %s", user_id, dislike_product)
     store_user_feedback(user_id, like_product, dislike_product)
     query_vector = get_user_vector(user_id)
 
@@ -159,6 +188,7 @@ async def update_preferences(user_id : str,
     
 
     query_vector = refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration)
+    logger.warn("Query vector refined for user %s", user_id)
     update_user_vector(user_id, query_vector)
     logger.info("User vector updated for user %s", user_id)
 

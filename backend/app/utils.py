@@ -8,9 +8,9 @@ client = QdrantClient("qdrant", port=6333)
 
 # mock database
 delivery_time_mapping = {
-    2 : ['Singapore'],
+    2 : ['Singapore', 'Malaysia'],
     3 : ['Indonesia'],
-    7 : ['China'],
+    7 : ['China', 'Japan', 'Korea'],
 }
 # user_id : user_vector
 user_vectors = {}
@@ -42,7 +42,7 @@ def get_user_feedback(user_id):
     # get the user feedback from the database, liked and disliked products during the swipe
     return user_like_visited_products.get(user_id, []), user_dislike_visited_products.get(user_id, [])
 
-def refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration, alpha=0.6, beta=0.7, gamma=0.85, decay_rate = 0.95, max_iterations=10):
+def refine_query_vector(query_vector, positive_embeddings, negative_embeddings, iteration, alpha=0.8, beta=0.8, gamma=0.9, decay_rate = 0.99, max_iterations=30):
     decay_factor = decay_rate ** min(iteration, max_iterations)
     if positive_embeddings:
         query_vector += (alpha * gamma * decay_factor) * np.mean(positive_embeddings, axis=0)
@@ -80,6 +80,8 @@ def get_recommendations(query_vector, n,filters= [], exclude_ids=None):
             must=filters
                 )
         )
+    if not results:
+        return []
     return [r.payload['asin'] for r in results if r.payload['asin'] not in (exclude_ids or [])][:n]
 
 def get_vectors_for_asins(collection_name, asins):
@@ -129,11 +131,17 @@ def create_filters_from_conditions(conditions):
             filters.append(FieldCondition(key="price", range=Range(**price_range)))
 
     if 'trendiness' in conditions and conditions['trendiness']:
-        filters.append(FieldCondition(key="isBestSeller", match=MatchValue(value=True)))
+        trendiness_convert = {'High': 2000, 'Med': 1000, 'Low': 500}
+        bought_threadhold = trendiness_convert[conditions['trendiness']]
+        filters.append(  FieldCondition(
+                    key="boughtInLastMonth",
+                    range=Range(
+                        gte=bought_threadhold
+                        )))
 
     if 'delivery_time' in conditions and conditions['delivery_time']:
         countries = delivery_time_mapping[conditions['delivery_time']]
-        filters.append(FieldCondition(key="origin_country", match=MatchAny(values=countries)))
+        filters.append(FieldCondition(key="origin_country", match=MatchAny(any=countries)))
 
     if 'title' in conditions and conditions['title']:
         filters.append(FieldCondition(key="title", match=MatchText(text=conditions['title'])))

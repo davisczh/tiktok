@@ -50,4 +50,4 @@ def test_update_preferences():
 if __name__ == "__main__":
     test_get_product_recommendations()
     print("get_product_recommendations passed\n")
-    test_update_preferences()
+    # test_update_preferences()

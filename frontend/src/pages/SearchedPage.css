@@ -1,0 +1,119 @@
+.searched-page {
+  padding: 16px;
+}
+
+.search-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.search-bar {
+  width: 80%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.category-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 8px;
+}
+
+.category-tab {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.category-tab.active {
+  border-bottom: 2px solid #000;
+}
+
+.sort-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 16px;
+}
+
+.sort-tab {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.sort-tab.active {
+  color: red;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.product-image {
+  max-width: 100%;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
+.product-info {
+  padding: 8px;
+}
+
+.product-name {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.product-description {
+  margin-bottom: 8px;
+}
+
+.product-price {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.current-price {
+  color: red;
+  font-weight: bold;
+}
+
+.original-price {
+  text-decoration: line-through;
+  margin-left: 8px;
+  color: #888;
+}
+
+.flash-sale {
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.flash-sale-end {
+  font-weight: bold;
+}
+
+.product-rating {
+  margin-bottom: 8px;
+}
+
+.reviews {
+  color: #888;
+}
