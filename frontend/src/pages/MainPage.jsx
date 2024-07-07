@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import "./MainPage.css";
 import BottomNav from "../components/BottomNav";
-
 import FilterPanel from "./FilterPanel";
 
 const MainPage = () => {
@@ -11,6 +11,7 @@ const MainPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filters, setFilters] = useState({}); // State to store applied filters
   const navigate = useNavigate();
 
   // Sample product data
@@ -46,16 +47,18 @@ const MainPage = () => {
   ];
 
   // Event handler for the search button
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (searchInput.trim()) {
-      const filters = { title: searchInput };
+      const currentFilters = { ...filters, title: searchInput };
 
       // Construct query parameters from filters
       const queryParams = new URLSearchParams({
-        category: filters.category || "",
-        min_price: filters.min_price || "",
-        max_price: filters.max_price || "",
-        title: filters.title || "",
+        category: currentFilters.category || "",
+        min_price: currentFilters.min_price || "",
+        max_price: currentFilters.max_price || "",
+        title: currentFilters.title || "",
+        trendiness: currentFilters.trendiness || "",
+        delivery_time: currentFilters.delivery || "",
       }).toString();
 
       // Construct the full URL using the userId
@@ -64,7 +67,20 @@ const MainPage = () => {
       // Log the constructed URL to the console
       console.log("Constructed URL:", url);
 
-      navigate("/searched", { state: { query: searchInput } });
+      try {
+        // Perform the GET request using Axios
+        const response = await axios.get(url);
+        const products = response.data.products; // Adjust this based on your actual response structure
+        setFilteredProducts(products);
+
+        // Navigate to the searched page with the results
+        navigate("/searched", {
+          state: { query: searchInput, filters: currentFilters, products },
+        });
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        // Handle error appropriately here
+      }
     }
   };
 
@@ -72,15 +88,11 @@ const MainPage = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
-  const handleApplyFilters = (filters) => {
-    // Update the title filter with the search input
-    filters.title = searchInput;
-
-    // Log the filters that would be sent to the backend
-    console.log("Filters:", filters);
-
-    // Assume setFilteredProducts will use filters to fetch and update product data
-    // setFilteredProducts(updatedProducts);
+  const handleApplyFilters = (appliedFilters) => {
+    setFilters(appliedFilters);
+    console.log("Filters:", appliedFilters);
+    // Optionally, you could trigger a search here if you want to fetch data immediately after applying filters
+    // handleSearch();
   };
 
   return (
