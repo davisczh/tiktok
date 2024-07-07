@@ -52,5 +52,5 @@ project-root/
 │ │ └── amazon_categories.csv
 │ └── df_combined_small.csv
 ├── docker-compose.yml
-└── ...
+└── frontend/
 ```
